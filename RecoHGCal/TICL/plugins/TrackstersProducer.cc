@@ -3,6 +3,8 @@
 // Copyright CERN
 
 // user include files
+#include <vector>
+
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/stream/EDProducer.h"
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
@@ -15,16 +17,16 @@
 #include "DataFormats/ParticleFlowReco/interface/PFCluster.h"
 
 
-#include "RecoHGCal/TICL/interface/PatternRecognitionAlgo.h"
+#include "RecoHGCal/TICL/interface/PatternRecognitionAlgoBase.h"
 #include "RecoHGCal/TICL/interface/Trackster.h"
 #include "RecoHGCal/TICL/plugins/TrackstersProducer.h"
 
-#include "RecoHGCal/TICL/interface/PatternRecognitionbyMultiClusters.h"
+#include "PatternRecognitionbyMultiClusters.h"
 
 
 DEFINE_FWK_MODULE(TrackstersProducer);
 
-TrackstersProducer::TrackstersProducer(const edm::ParameterSet& ps): theAlgo(std::make_unique<PatternRecognitionbyMultiClusters>(ps))
+TrackstersProducer::TrackstersProducer(const edm::ParameterSet& ps): myAlgo_(std::make_unique<PatternRecognitionbyMultiClusters>(ps))
 {
   clusters_token = consumes<std::vector<reco::CaloCluster>>(
       ps.getParameter<edm::InputTag>("HGCLayerClusters"));
@@ -58,7 +60,7 @@ void TrackstersProducer::produce(edm::Event& evt,
   const auto& inputClusterMask = *filteredLayerClustersHandle;
   std::unique_ptr<std::vector<std::pair<unsigned int, float>>> filteredLayerClusters;
   auto result = std::make_unique<std::vector<Trackster>>();;
-  theAlgo.makeTracksters(evt, es, layerClusters, inputClusterMask, *result);
+  myAlgo_->makeTracksters(evt, es, layerClusters, inputClusterMask, *result);
   evt.put(std::move(result), "TrackstersByMultiClusters");
 
 }

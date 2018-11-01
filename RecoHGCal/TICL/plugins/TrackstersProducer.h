@@ -1,7 +1,7 @@
 #ifndef __RecoHGCal_TICL_TrackstersProducer_H__
 #define __RecoHGCal_TICL_TrackstersProducer_H__
-#include "RecoHGCal/TICL/interface/PatternRecognitionAlgo.h"
-#include "DataFormats/ParticleFlowReco/interface/PFCluster.h"
+#include "DataFormats/CaloRecHit/interface/CaloCluster.h"
+#include "RecoHGCal/TICL/interface/PatternRecognitionAlgoBase.h"
 
 class TrackstersProducer : public edm::stream::EDProducer<> {
 public:
@@ -14,12 +14,13 @@ public:
 
 private:
 
-  edm::EDGetTokenT<PatternRecognitionAlgo> patterRecognitionAlgoToken;
+  edm::EDGetTokenT<PatternRecognitionAlgoBase> patterRecognitionAlgoToken;
 
   edm::EDGetTokenT<std::vector<reco::CaloCluster>> clusters_token;
   edm::EDGetTokenT<std::vector<std::pair<unsigned int, float>>> filteredClustersMask_token;
 
-  const PatternRecognitionAlgo theAlgo;
+  std::unique_ptr<PatternRecognitionAlgoBase> myAlgo_;
+
 };
 
 
