@@ -8,23 +8,21 @@
 #include <vector>
 #include <memory>
 #include "RecoHGCal/TICL/interface/Trackster.h"
+#include "DataFormats/CaloRecHit/interface/CaloCluster.h"
 
 namespace edm {class ParameterSet; class Event; class EventSetup;}
-namespace reco {class CaloCluster;}
 
 
 class PatternRecognitionAlgoBase {
 public:
   PatternRecognitionAlgoBase(const edm::ParameterSet& conf){}
-  PatternRecognitionAlgoBase() = delete;
-
-  virtual ~PatternRecognitionAlgoBase(){}
+  virtual ~PatternRecognitionAlgoBase() {};
 
   virtual void makeTracksters(
       const edm::Event& ev,
       const edm::EventSetup& es,
       const std::vector<reco::CaloCluster>& layerClusters,
-      const std::vector<std::pair<unsigned int, float> >& mask, std::vector<Trackster>& result) const {  makeTracksters(ev, es, layerClusters, mask, result); }
+      const std::vector<std::pair<unsigned int, float> >& mask, std::vector<Trackster>& result) const {};
 };
 
 
