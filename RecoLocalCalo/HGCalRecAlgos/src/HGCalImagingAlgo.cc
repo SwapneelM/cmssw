@@ -189,12 +189,12 @@ std::vector<reco::BasicCluster> HGCalImagingAlgo::getClusters(bool doSharing) {
         // exclusively of Halo hits into single components and promote them to
         // be MIP-like single-hit clusters.
 
-        if (thisCluster.size() > 1 && energy == 0.f) {
+        if (splitFullHaloClusters_ && thisCluster.size() > 1 && energy == 0.f) {
           for_each(std::begin(clsOnLayer[i]), std::end(clsOnLayer[i]),
             [&](auto & node) {
               // Put a higher threshold before promoting the node to be a
               // single-hit MIP-like cluster
-              if (node.data.weight < node.data.sigmaNoise/ecut_*10.f)
+              if (node.data.weight < node.data.sigmaNoise/ecut_*ecut_miplike_)
                 return;
               Point thisPosition(node.data.x, node.data.y, node.data.z);
               std::vector<std::pair<DetId, float>> thisSingleCluster = {std::make_pair(node.data.detid, 1.f)};

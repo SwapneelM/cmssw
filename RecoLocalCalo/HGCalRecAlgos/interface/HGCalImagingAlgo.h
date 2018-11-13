@@ -56,6 +56,7 @@ HGCalImagingAlgo() : vecDeltas(), kappa(1.), ecut(0.),
 }
 
 HGCalImagingAlgo(const std::vector<double>& vecDeltas_in, double kappa_in, double ecut_in,
+                 bool splitFullHaloClusters, double ecut_miplike,
                  reco::CaloCluster::AlgoId algoId_in,
                  bool dependSensor_in,
                  const std::vector<double>& dEdXweights_in,
@@ -65,6 +66,7 @@ HGCalImagingAlgo(const std::vector<double>& vecDeltas_in, double kappa_in, doubl
                  const std::vector<double>& nonAgedNoises_in,
                  double noiseMip_in,
                  VerbosityLevel the_verbosity = pERROR) :
+<<<<<<< HEAD
         vecDeltas(vecDeltas_in), kappa(kappa_in),
         ecut(ecut_in),
         sigma2(1.0),
@@ -80,6 +82,25 @@ HGCalImagingAlgo(const std::vector<double>& vecDeltas_in, double kappa_in, doubl
         initialized(false),
         points(2*(maxlayer+1)),
         minpos(2*(maxlayer+1),{
+=======
+        vecDeltas_(vecDeltas_in), kappa_(kappa_in),
+        ecut_(ecut_in),
+        splitFullHaloClusters_(splitFullHaloClusters),
+        ecut_miplike_(ecut_miplike),
+        sigma2_(1.0),
+        algoId_(algoId_in),
+        dependSensor_(dependSensor_in),
+        dEdXweights_(dEdXweights_in),
+        thicknessCorrection_(thicknessCorrection_in),
+        fcPerMip_(fcPerMip_in),
+        fcPerEle_(fcPerEle_in),
+        nonAgedNoises_(nonAgedNoises_in),
+        noiseMip_(noiseMip_in),
+        verbosity_(the_verbosity),
+        initialized_(false),
+        points_(2*(maxlayer+1)),
+        minpos_(2*(maxlayer+1),{
+>>>>>>> 8cb4a0d4fea... Add parameters to MIP-Like Layer Clusters
                 {0.0f,0.0f}
         }),
         maxpos(2*(maxlayer+1),{ {0.0f,0.0f} })
@@ -87,6 +108,7 @@ HGCalImagingAlgo(const std::vector<double>& vecDeltas_in, double kappa_in, doubl
 }
 
 HGCalImagingAlgo(const std::vector<double>& vecDeltas_in, double kappa_in, double ecut_in,
+                 bool splitFullHaloClusters, double ecut_miplike,
                  double showerSigma,
                  reco::CaloCluster::AlgoId algoId_in,
                  bool dependSensor_in,
@@ -96,6 +118,7 @@ HGCalImagingAlgo(const std::vector<double>& vecDeltas_in, double kappa_in, doubl
                  double fcPerEle_in,
                  const std::vector<double>& nonAgedNoises_in,
                  double noiseMip_in,
+<<<<<<< HEAD
                  VerbosityLevel the_verbosity = pERROR) : vecDeltas(vecDeltas_in), kappa(kappa_in),
         ecut(ecut_in),
         sigma2(std::pow(showerSigma,2.0)),
@@ -111,6 +134,25 @@ HGCalImagingAlgo(const std::vector<double>& vecDeltas_in, double kappa_in, doubl
         initialized(false),
         points(2*(maxlayer+1)),
 	minpos(2*(maxlayer+1),{
+=======
+                 VerbosityLevel the_verbosity = pERROR) : vecDeltas_(vecDeltas_in), kappa_(kappa_in),
+        ecut_(ecut_in),
+        splitFullHaloClusters_(splitFullHaloClusters),
+        ecut_miplike_(ecut_miplike),
+        sigma2_(std::pow(showerSigma,2.0)),
+        algoId_(algoId_in),
+        dependSensor_(dependSensor_in),
+        dEdXweights_(dEdXweights_in),
+        thicknessCorrection_(thicknessCorrection_in),
+        fcPerMip_(fcPerMip_in),
+        fcPerEle_(fcPerEle_in),
+        nonAgedNoises_(nonAgedNoises_in),
+        noiseMip_(noiseMip_in),
+        verbosity_(the_verbosity),
+        initialized_(false),
+        points_(2*(maxlayer+1)),
+	minpos_(2*(maxlayer+1),{
+>>>>>>> 8cb4a0d4fea... Add parameters to MIP-Like Layer Clusters
                 {0.0f,0.0f}
         }),
 	maxpos(2*(maxlayer+1),{ {0.0f,0.0f} })
@@ -171,6 +213,13 @@ double kappa;
 
 // The hit energy cutoff
 double ecut;
+
+// Split layer clusters that are made only of Halo-like clusters
+bool splitFullHaloClusters_;
+
+// Energy threshold to apply to a split Halo-only clusters to promote its
+// components as single-hit, mip-like layer clusters.
+double ecut_miplike_;
 
 // for energy sharing
 double sigma2;   // transverse shower size
