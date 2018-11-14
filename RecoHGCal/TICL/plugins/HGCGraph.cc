@@ -10,7 +10,7 @@ void HGCGraph::makeAndConnectDoublets(const std::vector<std::vector<std::vector<
                                       int nPhiBins, const std::vector<reco::CaloCluster> &layerClusters, int nClusters, int deltaIEta, int deltaIPhi, float minCosTheta)
 {
     isOuterClusterOfDoublets_.clear();
-    isOuterClusterOfDoublets_.resize(nClusters);
+    isOuterClusterOfDoublets_.resize(layerClusters.size());
     allDoublets_.clear();
     theRootDoublets_.clear();
     for (int zSide = 0; zSide < 2; ++zSide)
