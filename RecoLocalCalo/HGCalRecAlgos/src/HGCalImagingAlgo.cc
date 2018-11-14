@@ -438,12 +438,16 @@ int HGCalImagingAlgo::findAndAssignClusters(
     if (ci ==
         -1) { // clusterIndex is initialised with -1 if not yet used in cluster
       nd[i].data.clusterIndex = nd[nd[i].data.nearestHigher].data.clusterIndex;
-      std::cout << "Setting clusterIdx: " << nd[i].data.clusterIndex
-        << " to node: " << i << std::endl;
+      if (verbosity_ < pINFO) {
+        std::cout << "Setting clusterIdx: " << nd[i].data.clusterIndex
+          << " to node: " << i << std::endl;
+      }
     } else {
-      std::cout << "Skipping node: " << i
-        << " with clusterIndex: " << ci
-        << std::endl;
+      if (verbosity_ < pINFO) {
+        std::cout << "Skipping node: " << i
+          << " with clusterIndex: " << ci
+          << std::endl;
+      }
     }
   }
 
