@@ -18,10 +18,10 @@ void HGCGraph::makeAndConnectDoublets(const std::vector<std::vector<std::vector<
   {
     for (int il = 0; il < ticlConstants::maxNumberOfLayers - 1; ++il)
     {
-      for (int outer_layer = 0; outer_layer < std::min(missing_layers, ticlConstants::maxNumberOfLayers-il); ++outer_layer)
+      for (int outer_layer = 0; outer_layer < std::min(1 + missing_layers, ticlConstants::maxNumberOfLayers - 1 - il); ++outer_layer)
       {
         int currentInnerLayerId = il + ticlConstants::maxNumberOfLayers * zSide;
-        int currentOuterLayerId = currentInnerLayerId + outer_layer;
+        int currentOuterLayerId = currentInnerLayerId + 1 + outer_layer;
         auto &outerLayerHisto = h[currentOuterLayerId];
         auto &innerLayerHisto = h[currentInnerLayerId];
 
@@ -87,7 +87,8 @@ void HGCGraph::makeAndConnectDoublets(const std::vector<std::vector<std::vector<
 }
 
 
-void HGCGraph::findNtuplets(std::vector<HGCDoublet::HGCntuplet> &foundNtuplets, const unsigned int minClustersPerNtuplet)
+void HGCGraph::findNtuplets(std::vector<HGCDoublet::HGCntuplet> &foundNtuplets,
+                            const unsigned int minClustersPerNtuplet)
 {
     HGCDoublet::HGCntuplet tmpNtuplet;
     tmpNtuplet.reserve(minClustersPerNtuplet);
