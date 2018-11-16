@@ -80,5 +80,5 @@ void FilteredLayerClustersProducer::produce(edm::Event& evt,
   {
     filteredLayerClusters = std::move(availableLayerClusters);
   }
-  evt.put(std::move(filteredLayerClusters), "iterationLabelGoesHere");
+  evt.put(std::move(filteredLayerClusters), iteration_label_);
 }
