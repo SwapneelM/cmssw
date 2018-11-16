@@ -46,6 +46,7 @@ void FilteredLayerClustersProducer::fillDescriptions(
       edm::InputTag("hgcalLayerClusters", "InitialLayerClustersMask"));
   desc.add<std::string>(
       "ClusterFilter", "ClusterFilterByAlgo");
+  desc.add<int>("algo_number", 9);
   descriptions.add("FilteredLayerClusters", desc);
 }
 
