@@ -37,7 +37,13 @@ void HGCGraph::makeAndConnectDoublets(const std::vector<std::vector<std::vector<
                             //wrap phi bin
                             for (int phiRange = 0; phiRange < 2 * deltaIPhi + 1; ++phiRange)
                             {
-                                auto iphi = ophi - deltaIPhi + phiRange;
+                              // The first wrapping is to take into account the
+                              // cases in which we would have to seach in
+                              // negative bins. The second wrap is mandatory to
+                              // account for all other cases, since we add in
+                              // between a full nPhiBins slot.
+                                auto iphi = ((ophi + phiRange - deltaIPhi) %
+                                    nPhiBins + nPhiBins) % nPhiBins;
                                 for (auto innerClusterId : innerLayerHisto[ieta * nPhiBins + iphi])
                                 {
                                     auto doubletId = allDoublets_.size();
