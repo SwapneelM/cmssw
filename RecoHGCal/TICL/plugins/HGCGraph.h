@@ -22,12 +22,15 @@ public:
     theNtuplets_.clear();
     isOuterClusterOfDoublets_.clear();
   }
+  void setVerbosity(int level) { verbosity_ = level;}
+  enum VerbosityLevel {None = 0, Basic, Advanced, Expert, Guru};
 
 private:
   std::vector<HGCDoublet> allDoublets_;
   std::vector<unsigned int> theRootDoublets_;
   std::vector<std::vector<HGCDoublet *>> theNtuplets_;
   std::vector<std::vector<int>> isOuterClusterOfDoublets_;
+  int verbosity_;
 };
 
 #endif

@@ -11,7 +11,9 @@
 void PatternRecognitionbyCA::fillHistogram(const std::vector<reco::CaloCluster> &layerClusters,
                                            const std::vector<std::pair<unsigned int, float>> &mask)
 {
-    std::cout << "filling eta/phi histogram per Layer" << std::endl;
+    if (algoVerbosity_ > None) {
+      std::cout << "filling eta/phi histogram per Layer" << std::endl;
+    }
     for (auto &m : mask)
     {
         auto lcId = m.first;
@@ -23,6 +25,11 @@ void PatternRecognitionbyCA::fillHistogram(const std::vector<reco::CaloCluster> 
         auto etaBin = getEtaBin(lc.eta());
         auto phiBin = getPhiBin(lc.phi());
         histogram_[layer][globalBin(etaBin, phiBin)].push_back(lcId);
+        if (algoVerbosity_ > Advanced) {
+          std::cout << "Adding layerClusterId: " << lcId
+                    << " into bin [eta,phi]: [ " << etaBin
+                    << " , " << phiBin << "] for layer: " << layer << std::endl;
+        }
     }
 }
 
@@ -36,10 +43,12 @@ void PatternRecognitionbyCA::makeTracksters(
 
     clearHistogram();
     theGraph_.clear();
-    std::cout << "making Tracksters with CA" << std::endl;
+    if (algoVerbosity_ > None) {
+      std::cout << "making Tracksters with CA" << std::endl;
+    }
     std::vector<HGCDoublet::HGCntuplet> foundNtuplets;
     fillHistogram(layerClusters, mask);
-    theGraph_.makeAndConnectDoublets(histogram_, nEtaBins_, nPhiBins_, layerClusters, 2, 2, 0.98);
+    theGraph_.makeAndConnectDoublets(histogram_, nEtaBins_, nPhiBins_, layerClusters, 3, 3, 0.98);
     theGraph_.findNtuplets(foundNtuplets, 4);
 //#ifdef FP_DEBUG
     const auto &doublets = theGraph_.getAllDoublets();
@@ -53,17 +62,19 @@ void PatternRecognitionbyCA::makeTracksters(
             auto outerCluster = doublets[doublet].getOuterClusterId();
             effective_cluster_idx.insert(innerCluster);
             effective_cluster_idx.insert(outerCluster);
-            std::cout << "new doublet " << doublet <<std::endl;
-            std::cout << innerCluster
-                      << " " << layerClusters[innerCluster].x()
-                      << " " << layerClusters[innerCluster].y()
-                      << " " << layerClusters[innerCluster].z()
-                      << " " << std::endl;
-            std::cout << outerCluster
-                      << " " << layerClusters[outerCluster].x()
-                      << " " << layerClusters[outerCluster].y()
-                      << " " << layerClusters[outerCluster].z()
-                      << " " << tracksterId << std::endl;
+            if (algoVerbosity_ > Advanced) {
+              std::cout << "new doublet " << doublet <<std::endl;
+              std::cout << innerCluster
+                << " " << layerClusters[innerCluster].x()
+                << " " << layerClusters[innerCluster].y()
+                << " " << layerClusters[innerCluster].z()
+                << " " << std::endl;
+              std::cout << outerCluster
+                << " " << layerClusters[outerCluster].x()
+                << " " << layerClusters[outerCluster].y()
+                << " " << layerClusters[outerCluster].z()
+                << " " << tracksterId << std::endl;
+            }
         }
         // Put back indices, in the form of a Trackster, into the results vector
         Trackster tmp;

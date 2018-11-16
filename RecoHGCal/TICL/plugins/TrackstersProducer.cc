@@ -44,6 +44,7 @@ void TrackstersProducer::fillDescriptions(
                           edm::InputTag("hgcalLayerClusters"));
   desc.add<edm::InputTag>("filteredLayerClusters",
       edm::InputTag("FilteredLayerClusters","iterationLabelGoesHere"));
+  desc.add<int>("algoVerbosity", 10);
   descriptions.add("Tracksters", desc);
 }
 
@@ -60,7 +61,7 @@ void TrackstersProducer::produce(edm::Event& evt,
   const auto& layerClusters = *clusterHandle;
   const auto& inputClusterMask = *filteredLayerClustersHandle;
   std::unique_ptr<std::vector<std::pair<unsigned int, float>>> filteredLayerClusters;
-  auto result = std::make_unique<std::vector<Trackster>>();;
+  auto result = std::make_unique<std::vector<Trackster>>();
   myAlgo_->makeTracksters(evt, es, layerClusters, inputClusterMask, *result);
   evt.put(std::move(result), "TrackstersByCA");
 
