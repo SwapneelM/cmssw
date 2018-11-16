@@ -44,7 +44,9 @@ void TrackstersProducer::fillDescriptions(
                           edm::InputTag("hgcalLayerClusters"));
   desc.add<edm::InputTag>("filteredLayerClusters",
       edm::InputTag("FilteredLayerClusters","iterationLabelGoesHere"));
-  desc.add<int>("algoVerbosity", 10);
+  desc.add<int>("algo_verbosity", 0);
+  desc.add<double>("min_cos_theta", 0.915);
+  desc.add<int>("missing_layers", 2);
   descriptions.add("Tracksters", desc);
 }
 

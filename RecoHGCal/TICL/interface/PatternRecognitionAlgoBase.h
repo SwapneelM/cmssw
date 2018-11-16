@@ -17,7 +17,7 @@ namespace edm {class Event; class EventSetup;}
 class PatternRecognitionAlgoBase {
 public:
   PatternRecognitionAlgoBase(const edm::ParameterSet& conf)
-    : algoVerbosity_(conf.getParameter<int>("algoVerbosity")) {}
+    : algo_verbosity_(conf.getParameter<int>("algo_verbosity")) {}
   virtual ~PatternRecognitionAlgoBase() {};
 
   virtual void makeTracksters(
@@ -27,7 +27,7 @@ public:
       const std::vector<std::pair<unsigned int, float> >& mask, std::vector<Trackster>& result) = 0;
   enum VerbosityLevel {None = 0, Basic, Advanced, Expert, Guru};
 protected:
-  int algoVerbosity_;
+  int algo_verbosity_;
 };
 
 
