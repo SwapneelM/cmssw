@@ -416,7 +416,7 @@ int HGCalImagingAlgo::findAndAssignClusters(
   // clusters. The requirement that the single node is above N sigma levels is
   // already accounted for while creating the nodes in the first place. No need
   // to replicate the cut here.
-  if (nClustersOnLayer == 0 ) {
+  if (promote_single_nodes_ && nClustersOnLayer == 0 ) {
     for (unsigned int i = 0; i < nd_size; ++i) {
       if (nd[i].data.weight > 0.) {
         nd[i].data.clusterIndex = nClustersOnLayer++;
@@ -455,20 +455,22 @@ int HGCalImagingAlgo::findAndAssignClusters(
   // any cluster. If that's the case, promote them to be single-node clusters,
   // potentially MIP-like.
 
-  int counter = 0;
-  std::for_each(std::begin(nd), std::end(nd),
-    [&](auto & node) {
-      if (node.data.clusterIndex == -1) {
-        node.data.clusterIndex = nClustersOnLayer++;
-        if (verbosity_ <pINFO) {
-          std::cout << "Recovering node: " << counter
-            << " as Cluster: " << node.data.clusterIndex
-            << std::endl;
+  if (promote_single_nodes_) {
+    int counter = 0;
+    std::for_each(std::begin(nd), std::end(nd),
+      [&](auto & node) {
+        if (node.data.clusterIndex == -1) {
+          node.data.clusterIndex = nClustersOnLayer++;
+          if (verbosity_ <pINFO) {
+            std::cout << "Recovering node: " << counter
+              << " as Cluster: " << node.data.clusterIndex
+              << std::endl;
+          }
         }
+        counter++;
       }
-      counter++;
-    }
-  );
+    );
+  }
 
 
   if (verbosity_ < pINFO) {
