@@ -173,7 +173,7 @@ std::vector<reco::BasicCluster> HGCalImagingAlgo::getClusters(bool doSharing) {
           // reported, even if the node has been reasonably marked as
           // Halo/Isolated. Moreover, they will be assigned the algorithm
           // hgcal_mip.
-          if (clsOnLayer[i].size() == 1) {
+          if (promote_single_nodes_ && clsOnLayer[i].size() == 1) {
             this_energy = it.data.weight;
             fraction = 1.f;
             this_algorithm = reco::CaloCluster::hgcal_mip;
