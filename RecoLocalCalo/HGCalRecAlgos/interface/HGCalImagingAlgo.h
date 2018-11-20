@@ -56,7 +56,9 @@ HGCalImagingAlgo() : vecDeltas(), kappa(1.), ecut(0.),
 }
 
 HGCalImagingAlgo(const std::vector<double>& vecDeltas_in, double kappa_in, double ecut_in,
-                 bool splitFullHaloClusters, bool promote_single_nodes, double ecut_miplike,
+                 bool splitFullHaloClusters, bool promote_single_nodes,
+                 bool apply_cutoff_distance, double cutoff_distance,
+                 double ecut_miplike,
                  reco::CaloCluster::AlgoId algoId_in,
                  bool dependSensor_in,
                  const std::vector<double>& dEdXweights_in,
@@ -87,6 +89,8 @@ HGCalImagingAlgo(const std::vector<double>& vecDeltas_in, double kappa_in, doubl
         ecut_(ecut_in),
         splitFullHaloClusters_(splitFullHaloClusters),
         promote_single_nodes_(promote_single_nodes),
+        apply_cutoff_distance_(apply_cutoff_distance),
+        cutoff_distance_(cutoff_distance),
         ecut_miplike_(ecut_miplike),
         sigma2_(1.0),
         algoId_(algoId_in),
@@ -109,7 +113,9 @@ HGCalImagingAlgo(const std::vector<double>& vecDeltas_in, double kappa_in, doubl
 }
 
 HGCalImagingAlgo(const std::vector<double>& vecDeltas_in, double kappa_in, double ecut_in,
-                 bool splitFullHaloClusters, bool promote_single_nodes, double ecut_miplike,
+                 bool splitFullHaloClusters, bool promote_single_nodes,
+                 bool apply_cutoff_distance, double cutoff_distance,
+                 double ecut_miplike,
                  double showerSigma,
                  reco::CaloCluster::AlgoId algoId_in,
                  bool dependSensor_in,
@@ -140,6 +146,8 @@ HGCalImagingAlgo(const std::vector<double>& vecDeltas_in, double kappa_in, doubl
         ecut_(ecut_in),
         splitFullHaloClusters_(splitFullHaloClusters),
         promote_single_nodes_(promote_single_nodes),
+        apply_cutoff_distance_(apply_cutoff_distance),
+        cutoff_distance_(cutoff_distance),
         ecut_miplike_(ecut_miplike),
         sigma2_(std::pow(showerSigma,2.0)),
         algoId_(algoId_in),
@@ -222,6 +230,12 @@ bool splitFullHaloClusters_;
 // Promote single nodes that are either isolated or that have not been linked
 // to any other regular cluster, to be single-node (MIP-like) layer clusters
 bool promote_single_nodes_;
+
+// Decide if a cut of the distance is required
+bool apply_cutoff_distance_;
+
+// Set the value of the actual cut
+double cutoff_distance_;
 
 // Energy threshold to apply to a split Halo-only clusters to promote its
 // components as single-hit, mip-like layer clusters.

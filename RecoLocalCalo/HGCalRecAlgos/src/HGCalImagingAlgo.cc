@@ -437,10 +437,25 @@ int HGCalImagingAlgo::findAndAssignClusters(
     int ci = nd[i].data.clusterIndex;
     if (ci ==
         -1) { // clusterIndex is initialised with -1 if not yet used in cluster
-      nd[i].data.clusterIndex = nd[nd[i].data.nearestHigher].data.clusterIndex;
-      if (verbosity_ < pINFO) {
-        std::cout << "Setting clusterIdx: " << nd[i].data.clusterIndex
-          << " to node: " << i << std::endl;
+      if (apply_cutoff_distance_) {
+        if (nd[i].data.delta < cutoff_distance_) {
+          nd[i].data.clusterIndex = nd[nd[i].data.nearestHigher].data.clusterIndex;
+          if (verbosity_ < pINFO) {
+            std::cout << "Using Cutoff distance: " << cutoff_distance_
+              << " Setting clusterIdx: " << nd[i].data.clusterIndex
+              << " to node: " << i
+              << " distance between nodes: " << nd[i].data.delta
+              << std::endl;
+          }
+        }
+      } else {
+        nd[i].data.clusterIndex = nd[nd[i].data.nearestHigher].data.clusterIndex;
+        if (verbosity_ < pINFO) {
+          std::cout << "Setting clusterIdx: " << nd[i].data.clusterIndex
+            << " to node: " << i
+            << " distance between nodes: " << nd[i].data.delta
+            << std::endl;
+        }
       }
     } else {
       if (verbosity_ < pINFO) {
