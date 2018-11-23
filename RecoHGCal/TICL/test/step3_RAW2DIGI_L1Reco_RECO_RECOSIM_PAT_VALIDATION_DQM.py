@@ -224,12 +224,14 @@ from RecoLocalCalo.HGCalRecProducers.hgcalLayerClusters_cff import hgcalLayerClu
 from RecoHGCal.TICL.Tracksters_cfi import Tracksters
 from RecoHGCal.TICL.FilteredLayerClusters_cfi import FilteredLayerClusters
 
-process.Tracksters = Tracksters.clone()
-process.HGCalUncalibRecHit = HGCalUncalibRecHit
-process.HGCalRecHit = HGCalRecHit
-process.hgcalLayerClusters = hgcalLayerClusters
-process.FilteredLayerClusters = FilteredLayerClusters.clone()
-process.TICL = cms.Path(process.HGCalUncalibRecHit+process.HGCalRecHit+process.hgcalLayerClusters+ process.FilteredLayerClusters+ process.Tracksters )
+from ticl_iterations import TICL_iterations
+process = TICL_iterations(process)
+#process.Tracksters = Tracksters.clone()
+#process.HGCalUncalibRecHit = HGCalUncalibRecHit
+#process.HGCalRecHit = HGCalRecHit
+#process.hgcalLayerClusters = hgcalLayerClusters
+#process.FilteredLayerClusters = FilteredLayerClusters.clone()
+#process.TICL = cms.Path(process.HGCalUncalibRecHit+process.HGCalRecHit+process.hgcalLayerClusters+ process.FilteredLayerClusters+ process.Tracksters )
 process.schedule= cms.Schedule(process.raw2digi_step,process.L1Reco_step,process.TICL, process.FEVTDEBUGHLToutput_step)
 # Schedule definition
 # process.schedule = cms.Schedule(process.raw2digi_step,process.L1Reco_step,process.reconstruction_step,process.recosim_step,process.Flag_HBHENoiseFilter,process.Flag_HBHENoiseIsoFilter,process.Flag_CSCTightHaloFilter,process.Flag_CSCTightHaloTrkMuUnvetoFilter,process.Flag_CSCTightHalo2015Filter,process.Flag_globalTightHalo2016Filter,process.Flag_globalSuperTightHalo2016Filter,process.Flag_HcalStripHaloFilter,process.Flag_hcalLaserEventFilter,process.Flag_EcalDeadCellTriggerPrimitiveFilter,process.Flag_EcalDeadCellBoundaryEnergyFilter,process.Flag_ecalBadCalibFilter,process.Flag_goodVertices,process.Flag_eeBadScFilter,process.Flag_ecalLaserCorrFilter,process.Flag_trkPOGFilters,process.Flag_chargedHadronTrackResolutionFilter,process.Flag_muonBadTrackFilter,process.Flag_BadChargedCandidateFilter,process.Flag_BadPFMuonFilter,process.Flag_BadChargedCandidateSummer16Filter,process.Flag_BadPFMuonSummer16Filter,process.Flag_trkPOG_manystripclus53X,process.Flag_trkPOG_toomanystripclus53X,process.Flag_trkPOG_logErrorTooManyClusters,process.Flag_METFilters,process.prevalidation_step,process.prevalidation_step1,process.prevalidation_step2,process.prevalidation_step3,process.prevalidation_step4,process.prevalidation_step5,process.prevalidation_step6,process.validation_step,process.validation_step1,process.validation_step2,process.validation_step3,process.validation_step4,process.validation_step5,process.validation_step6,process.validation_step7,process.validation_step8,process.dqmoffline_step,process.dqmoffline_1_step,process.dqmoffline_2_step,process.dqmoffline_3_step,process.dqmoffline_4_step,process.dqmoffline_5_step,process.dqmoffline_6_step,process.dqmofflineOnPAT_step,process.dqmofflineOnPAT_1_step,process.FEVTDEBUGHLToutput_step,process.MINIAODSIMoutput_step,process.DQMoutput_step)
